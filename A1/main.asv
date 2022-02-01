@@ -32,17 +32,9 @@ F = 1000; % kmol/h
 r = @(T) 1 - antoine(T, 'm') * x1 - antoine(T, 'w') * (1 - x1);
 t = fsolve(r, 100);
 
-k1 = antoine(t, 'm');
-y1 = k1 * x1;
+y1 = antoine(t, 'm') * x1;
 
-% V/F (= f)
-r2 = @(f) x1 - z1 / (1 + f*(k1 - 1));
-f = fsolve(r2, 1);
-
-% Product flow rates
-V = f*F;
-L = F - V;
-
+% V/F (
 %% Question 1c
 x1 = 0.5;
 L = 600; % kmol/h
@@ -61,17 +53,3 @@ z1 = f*antoine(t, 'm')*x1 + (1 - f) * x1;
 z2 = 1 - z1;
 
 %% Question 1d
-y1 = 0.7;
-
-% Tdrum
-r = @(T) 1 - y1 / antoine(T, 'm') - (1 - y1) / antoine(T, 'w');
-t = fsolve(r, 100); % Tdrum
-
-k1 = antoine(t, 'm');
-
-% Compositions
-% --> at V/F = 1
-z1 = y1;
-
-% --> at V/F  = 0
-z1 = y1 / k1;
